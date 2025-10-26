@@ -4,13 +4,12 @@
 // - Which towers (and later inhib/nexus structures) have been destroyed up to T?
 // - Which big objectives are currently "up" (spawned and not yet killed)?
 //
-// You can refine this later with real respawn curves and respawn events.
 
 import type { ReplayEvent } from "./riotTimeline";
 
 /*  Config knobs */
 
-// Until we implement proper respawn logic, use a fixed death window (ms).
+// fixed death window (ms).
 export const DEFAULT_DEATH_WINDOW_MS = 30_000; // 30 seconds
 
 // Objective spawn times (ms since game start). Rough defaults:

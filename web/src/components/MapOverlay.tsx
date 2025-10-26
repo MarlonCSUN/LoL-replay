@@ -4,9 +4,9 @@
 // it spawns a short-lived "effect" at that event's map position.
 //
 // Notes:
-// - We position effects with absolute CSS (top/left) inside a relative container.
-// - Riot coordinates are 0..MAP_SIZE. We scale to pixels and invert Y.
-// - Effects self-remove after a short duration so the list doesn't grow forever.
+// We position effects with absolute CSS (top/left) inside a relative container.
+// Riot coordinates are 0..MAP_SIZE. We scale to pixels and invert Y.
+// Effects self-remove after a short duration so the list doesn't grow forever.
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import type { ReplayEvent } from "../lib/riotTimeline";
@@ -71,7 +71,7 @@ export default function MapOverlay({ width, height, timeMs, events }: Props) {
     for (const e of newlyCrossed) {
       spawn(e.kind, e.x, e.y);
     }
-  }, [timeMs, events, sx, sy, height]);
+  }, [timeMs, events, sx, sy, height, spawn]);
 
   // Auto-clean effects after their lifeMs
   useEffect(() => {
