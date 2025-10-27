@@ -24,3 +24,8 @@ Thumbs.db
 # Vite + cache
 web/.vite/
 web/.parcel-cache/
+package-lock.json
+package.json
+node_modules/.package-lock.json
+web/package-lock.json
+web/package.json

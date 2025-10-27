@@ -1,34 +1,78 @@
-import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
 
+import title from '../images/LoL-Title.png';
+import banner from '../images/LoL-Banner.png';
+
+
 export default function Login() {
-  const [name, setName] = useState("");
-  const { login } = useAuth();
-  const nav = useNavigate();
+    const [name, setName] = useState("");
+      const { login } = useAuth();
+      const nav = useNavigate();
+    
+      function onSubmit(e: FormEvent) {
+        e.preventDefault();
+        if (!name.trim()) return;
+        login(name.trim());
+        nav("/replay");
+      }
 
-  function onSubmit(e: FormEvent) {
-    e.preventDefault();
-    if (!name.trim()) return;
-    login(name.trim());
-    nav("/replay");
-  }
 
-  return (
-    <main style={{ maxWidth: 420 }}>
-      <h1>Log in</h1>
-      <p style={{ opacity: 0.8 }}>
-        (Dev-only login for now — enter any name. We’ll swap to real auth later.)
-      </p>
-      <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-        <input
-          placeholder="Your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          style={{ padding: 8, borderRadius: 6, border: "1px solid #ccc" }}
-        />
-        <button type="submit">Continue</button>
-      </form>
-    </main>
-  );
+
+    return(
+        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+            <Link to="/">
+                <img src={title}
+                style={{
+                    height: "20vh",
+                    width: "auto"
+                }}>
+                </img>
+            </Link>
+            {/* banner */}
+            <img src={banner}
+            style={{
+                height: "50vh",
+                width: "auto"
+            }}>
+            </img>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px"}}>
+                <h2>Username:</h2>
+                <input
+                type="text"
+                value={name}
+                placeholder="LoL-Lover"
+                onChange={(e) => setName(e.target.value)}
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                    console.log("Input accepted")
+                }}}
+                />
+            </div>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px"}}>
+                <h2>Password:</h2>
+                <input
+                type="text"
+                placeholder="********"
+                /*onChange={(e) => setSearchInput(e.target.value)}*/
+                onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                    console.log("Input accepted")}}}
+                />
+            </div>
+            <form onSubmit={onSubmit}>
+            <button type="submit">
+                Log In
+            </button>
+            </form>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center"}}>
+                <h3>Don't have an account? Create one</h3>
+                <Link to="/signup" style={{fontWeight:"bold", paddingLeft:"8px"}}>here</Link>
+                <h3>!</h3>
+            </div>
+            
+            
+        </div>
+    );
 }
