@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Landing from "./pages/Landing";
 import Login from "./pages/Login";
+import Signup from "./pages/Signup";
 import Replay from "./pages/Replay";
 import { AuthProvider, useAuth } from "./auth/AuthContext";
 import { JSX } from "react";
@@ -39,7 +40,8 @@ export default function App() {
         <div style={{ padding: 24 }}>
           <Routes>
             <Route path="/" element={<Landing />} />
-            <Route path="/login" element={<Login />} />            
+            <Route path="/login" element={<Login />} />       
+            <Route path="/signup" element={<Signup />} />         
             { /* Protect it later by wrapping in <PrivateRoute> */}
             <Route
               path="/replay"
