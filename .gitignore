@@ -29,3 +29,5 @@ package.json
 node_modules/.package-lock.json
 web/package-lock.json
 web/package.json
+web/package.json
+web/package-lock.json
