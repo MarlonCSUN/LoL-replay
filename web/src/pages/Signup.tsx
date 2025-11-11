@@ -6,7 +6,7 @@ import banner from '../images/LoL-Banner2.jpg';
 
 export default function Signup() {
     return(
-        <div style={{display:"flex", flexDirection:"column", alignItems:"center"}}>
+        <div style={{display:"flex", flexDirection:"column", alignItems:"center", gap:"32px"}}>
             <Link to="/">
                 <img src={title}
                 style={{
@@ -23,13 +23,13 @@ export default function Signup() {
             }}>
             </img>
             
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px", width:"30%"}}>
-                <h2>Username:</h2>
-                <h1></h1>
+            <h3>Create an Account</h3>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px"}}>
                 <input
+                style={{width:"300px", height:"25px"}}
                 type="text"
                 //value={name}
-                placeholder="LoL-Lover"
+                placeholder="Username"
                 //onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -37,13 +37,13 @@ export default function Signup() {
                 }}}
                 />
             </div>
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px", width:"20%"}}>
-                <h2>Email:</h2>
-                <h1></h1>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px"}}>
                 <input
+                style={{width:"300px", height:"25px"}}
+
                 type="text"
                 //value={name}
-                placeholder="lolplayer12345@email.com"
+                placeholder="Email"
                 //onChange={(e) => setName(e.target.value)}
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -51,25 +51,25 @@ export default function Signup() {
                 }}}
                 />
             </div>
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px", width:"25%"}}>
-                <h2>Password:</h2>
-                <h1></h1>
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px"}}>
                 <input
+                style={{width:"300px", height:"25px"}}
+
                 type="text"
-                placeholder="Must have 1 special character"
+                placeholder="Password"
                 /*onChange={(e) => setSearchInput(e.target.value)}*/
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {
                     console.log("Input accepted")}}}
                 />
             </div>
-
-            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px", width:"50%"}}>
-                <h2>Re-Input Password:</h2>
-                <h1></h1>
+            
+            <div style={{display:"flex", flexDirection:"row", alignItems:"center", gap:"15px"}}>
                 <input
+                style={{width:"300px", height:"25px"}}
+
                 type="text"
-                placeholder="..."
+                placeholder="Re-Enter Password"
                 /*onChange={(e) => setSearchInput(e.target.value)}*/
                 onKeyDown={(e) => {
                     if (e.key === "Enter") {

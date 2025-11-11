@@ -49,6 +49,12 @@ export default function MatchFinder({ onPick }: { onPick: (matchId: string) => v
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="GameName#Tag  or  NA1_1234567890"
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setInput(input)
+              onResolve()
+            }
+          }}
         /> 
         <button onClick={onResolve} disabled={loading} style={{ padding: "8px 12px" }}>
           {loading ? "Searching..." : "Find"}
