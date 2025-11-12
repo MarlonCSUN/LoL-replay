@@ -10,17 +10,25 @@ import { JSX } from "react";
 function Nav() {
   const { user, logout } = useAuth();
   return (
-    <nav style={{ display: "flex", gap: 16, padding: 16, borderBottom: "1px solid #eee" }}>
-      <Link to="/">Landing</Link>
-      <Link to="/replay">Replay</Link>
+    <nav style={{ backgroundImage: "linear-gradient(to right, #18132e, #3b3b3d)", 
+      borderBottom: "1px solid #eee", display:"flex", gap: 16, padding: 16 }}>
+      <Link to="/">
+        <button>Landing</button>
+      </Link>
+      <Link to="/replay">
+        <button>Replay</button>
+      </Link>
       {user ? (
         <>
           <span style={{ marginLeft: "auto" }}>Hi, {user.name}</span>
           <button onClick={logout}>Log out</button>
         </>
       ) : (
-        <Link style={{ marginLeft: "auto" }} to="/login">Log in</Link>
+        <Link style={{ marginLeft: "auto" }} to="/login">
+          <button>Log in</button>
+        </Link>
       )}
+      
     </nav>
   );
 }
