@@ -211,7 +211,7 @@ export default function Login() {
             }}
           >
             <Link to="/signup" style={{fontWeight:"bold", paddingLeft:"8px"}}>Signup Options</Link>
-            <Link to="/signup" style={{fontWeight:"bold", paddingLeft:"8px"}}>Forgot Password?</Link>
+            <Link to="/reset-password" style={{fontWeight:"bold", paddingLeft:"8px"}}>Forgot Password?</Link>
           </div>
         </div>
       </main>

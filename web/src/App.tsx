@@ -3,6 +3,7 @@ import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Replay from "./pages/Replay";
+import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider, useAuth } from "./auth/AuthContext";
 import { JSX } from "react";
 
@@ -49,7 +50,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />       
-            <Route path="/signup" element={<Signup />} />         
+            <Route path="/signup" element={<Signup />} />  
+            <Route path="/reset-password" element={<ResetPassword />} />        
             { /* Protect it later by wrapping in <PrivateRoute> */}
             <Route
               path="/replay"
