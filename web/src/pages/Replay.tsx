@@ -29,17 +29,12 @@ import {
   splitTeams,
 } from "../lib/riotTimeline";
 
+import { computeDeathMap, getDeadParticipantsAt } from "../lib/deathTimer";
+
 // Live game state (who’s dead, objectives up)
 import { computeLiveState } from "../lib/gameState";
 
-// Dynamic tower model (learn from events, persist, query alive at time)
-import {
-  learnFromEvents,
-  loadModel,
-  saveModel,
-  getAliveSitesAt,
-  type TowerModel,
-} from "../lib/towerModel";
+import { getAliveTowersAt } from "../lib/towerPositions";
 
 export default function Replay() {
   // UI / network
@@ -55,8 +50,6 @@ export default function Replay() {
   const lastTickRef = useRef<number>(0);
   const speedRef = useRef<number>(1);
 
-  // tower model (persisted)
-  const [towerModel, setTowerModel] = useState<TowerModel>(() => loadModel());
 
   // Load match when a new one is picked
   useEffect(() => {
@@ -101,35 +94,36 @@ export default function Replay() {
   // Live state at current time (dead set, objectives up)
   const live = useMemo(() => computeLiveState(events, timeMs), [events, timeMs]);
 
-  // Learn tower positions from events whenever events change
+  const deathMap = useMemo(() => computeDeathMap(events), [events]);
+
+  const dead = useMemo(() => 
+  getDeadParticipantsAt(deathMap, timeMs), 
+  [deathMap, timeMs]
+);
+
+const aliveTowers = useMemo(() => 
+    getAliveTowersAt(events, timeMs), 
+    [events, timeMs]
+  );
+
   useEffect(() => {
-    if (events.length === 0) return;
-    const updated = learnFromEvents(towerModel, events);
-
-    // Shallow equality check to avoid save loops
-    const keysA = Object.keys(towerModel);
-    const keysB = Object.keys(updated);
-    let changed = keysA.length !== keysB.length;
-    if (!changed) {
-      for (const k of keysB) {
-        const a = towerModel[k]; const b = updated[k];
-        if (!a || Math.abs(a.x - b.x) > 0.5 || Math.abs(a.y - b.y) > 0.5 || a.count !== b.count) {
-          changed = true; break;
-        }
-      }
-    }
-    if (changed) {
-      setTowerModel(updated);
-      saveModel(updated);
-    }
-  }, [events, towerModel]);
-
-  // Alive towers (sites we’ve learned that haven’t been killed yet by timeMs)
-  const aliveTowers = useMemo(() => {
-    return getAliveSitesAt(towerModel, events, timeMs).map(s => ({
-      x: s.x, y: s.y, teamId: s.teamId,
-    }));
-  }, [towerModel, events, timeMs]);
+  if (aliveTowers.length > 0) {
+    console.log('=== ALIVE TOWERS DEBUG ===');
+    console.log('Total:', aliveTowers.length);
+    
+    // Count by type
+    const byType = aliveTowers.reduce((acc, t) => {
+      const type = t.type || 'UNKNOWN';
+      acc[type] = (acc[type] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+    
+    console.log('By type:', byType);
+    
+    // Show first few towers
+    console.log('Sample towers:', aliveTowers.slice(0, 5));
+  }
+}, [aliveTowers]);
 
   // RAF loop for playback
   useEffect(() => {
@@ -233,7 +227,13 @@ export default function Replay() {
                 justifyItems: "center",
               }}
             >
-              <TeamRail title="Blue Team" team={teams.blue} side="blue" events={events} timeMs={timeMs} />
+              <TeamRail 
+              title="Blue Team" 
+              team={teams.blue} 
+              side="blue" 
+              events={events} 
+              timeMs={timeMs} 
+              />
 
               <div style={{
                  position: "relative", 
@@ -249,10 +249,17 @@ export default function Replay() {
                   timeMs={timeMs}
                   showHalos
                   markerStyle="name"
-                  dead={live.dead}
+                  dead={dead}
                   aliveTowers={aliveTowers}
+                  deathMap={deathMap} 
+                  events={events}
                 />
-                <MapOverlay width={900} height={900} events={events} timeMs={timeMs} />
+                <MapOverlay 
+                width={900} 
+                height={900} 
+                events={events} 
+                timeMs={timeMs} 
+                />
                 <ObjectiveHUD
                   dragon={live.objectivesUp.dragon}
                   baron={live.objectivesUp.baron}
@@ -265,11 +272,20 @@ export default function Replay() {
                 />
               </div>
 
-              <TeamRail title="Red Team" team={teams.red} side="red" events={events} timeMs={timeMs} />
+              <TeamRail 
+              title="Red Team" 
+              team={teams.red} 
+              side="red" 
+              events={events} 
+              timeMs={timeMs} 
+              />
             </div>
           )}
 
-          <EventBar events={events} onSeek={handleSeek} />
+          <EventBar 
+          events={events} 
+          onSeek={handleSeek} 
+          />
         </section>
       )}
     </main>

@@ -42,8 +42,8 @@ export interface RiotBuildingKillEvent extends RiotTimelineEventBase {
   type: "BUILDING_KILL";
   laneType?: string;
   teamId?: number;
-  buildingType?: string; // e.g., "TOWER_BUILDING", "INHIBITOR_BUILDING"
-  towerType?: string;    // e.g., "OUTER_TURRET", "INNER_TURRET", "BASE_TURRET"
+  buildingType?: string; //  "TOWER_BUILDING", "INHIBITOR_BUILDING"
+  towerType?: string;    //  "OUTER_TURRET", "INNER_TURRET", "BASE_TURRET"
 }
 
 /*
@@ -127,7 +127,7 @@ export type ReplayEvent =
   };
 
 
-// Helpers (type-safe, no `any`)
+// Helpers 
 
 export function parseParticipants(match: RiotMatch): ParticipantLite[] {
   const arr = match.info?.participants ?? [];
@@ -237,7 +237,7 @@ export function extractEvents(timeline: RiotTimeline | null): ReplayEvent[] {
           break;
         }
         default:
-          // ignore other event types for now
+          // ignore other event types
           break;
       }
     }
@@ -275,7 +275,7 @@ export function predictPosition(
   prevT: number,
   nextT: number,
   t: number,
-  speedCapUnitsPerSec = 1800 // tune this later
+  speedCapUnitsPerSec = 1800 
 ): Position | undefined {
   if (!prev && !next) return undefined;
   if (prev && !next) return prev;
@@ -299,7 +299,7 @@ export function predictPosition(
   return { x: prev!.x + dx * scale, y: prev!.y + dy * scale };
 }
 
-// Small, typed utilities (no `any`)
+// Small, typed utilities
 
 function isPosition(v: unknown): v is Position {
   if (

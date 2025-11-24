@@ -1,13 +1,11 @@
 // web/src/lib/gameState.ts
 // Derives "live game state at time T" from timeline events.
-// - Who is dead at T? (we approximate respawn by a fixed death window for now)
-// - Which towers (and later inhib/nexus structures) have been destroyed up to T?
-// - Which big objectives are currently "up" (spawned and not yet killed)?
+// Who is dead at T? (we approximate respawn by a fixed death window for now)
+// Which towers (and later inhib/nexus structures) have been destroyed up to T?
+// Which big objectives are currently "up" (spawned and not yet killed)?
 //
 
 import type { ReplayEvent } from "./riotTimeline";
-
-/*  Config knobs */
 
 // fixed death window (ms).
 export const DEFAULT_DEATH_WINDOW_MS = 30_000; // 30 seconds
@@ -18,14 +16,14 @@ export const HERALD_DESPAWN_MS = 20 * 60 * 1000; // 20:00 (rough)
 export const BARON_SPAWN_MS  = 20 * 60 * 1000;  // 20:00
 export const DRAGON_SPAWN_MS = 5 * 60 * 1000;   // first dragon ~5:00
 
-/*  Types we return to the UI  */
+// Types we return to the UI
 
 export type LiveState = {
   // Participants (by participantId) that are currently dead at time T
   dead: Set<number>;
   // Tower sites that have been destroyed up to time T
   destroyedTowers: { x: number; y: number }[];
-  // Which “big objectives” are currently up
+  // Which objectives are currently up
   objectivesUp: {
     dragon: boolean;
     baron: boolean;
@@ -33,7 +31,7 @@ export type LiveState = {
   };
 };
 
-/*  Core calculator  */
+// Core calculator
 
 /**
  * Compute live state at time `tMs` by scanning events up to that time.
