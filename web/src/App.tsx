@@ -1,6 +1,5 @@
 import { BrowserRouter, Routes, Route, Link, Navigate } from "react-router-dom";
 import Landing from "./pages/Landing";
-import About from "./pages/About";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Replay from "./pages/Replay";
@@ -19,9 +18,6 @@ function Nav() {
       </Link>
       <Link to="/replay">
         <button>Replay</button>
-      </Link>
-      <Link to="/about">
-        <button>About</button>
       </Link>
       {user ? (
         <>
@@ -55,8 +51,7 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<Login />} />       
             <Route path="/signup" element={<Signup />} />  
-            <Route path="/reset-password" element={<ResetPassword />} /> 
-            <Route path="/about" element={<About />} />       
+            <Route path="/reset-password" element={<ResetPassword />} />        
             { /* Protect it later by wrapping in <PrivateRoute> */}
             <Route
               path="/replay"
