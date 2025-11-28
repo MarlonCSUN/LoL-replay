@@ -9,6 +9,12 @@ dist/
 build/
 coverage/
 
+node_modules/
+.vs/
+dist/
+build/
+*.log
+
 # Env / secrets
 .env
 *.env
