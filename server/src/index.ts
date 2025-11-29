@@ -142,17 +142,66 @@ app.get("/api/matches/cached", async (_req, res) => {
 
         const summaries = rows.map((r) => {
             const data: any = r.json;
-            const p = data?.info?.participants?.[0];
-            const champ: string = p?.championName ?? "Unknown";
-            const kills = typeof p?.kills === "number" ? p.kills : "?";
-            const deaths = typeof p?.deaths === "number" ? p.deaths : "?";
-            const assists = typeof p?.assists === "number" ? p.assists : "?";
-            const kda = `${kills}/${deaths}/${assists}`;
+            const participants: any[] = data?.info?.participants ?? [];
+            const teams: any[] = data?.info?.teams ?? [];
+
+            // Split teams
+            const blueTeam = participants.filter((p) => p.teamId === 100);
+            const redTeam = participants.filter((p) => p.teamId === 200);
+
+            // Helper: pick “star” as highest kills on the team
+            const pickStar = (team: any[]) => {
+                if (!team.length) return undefined;
+                return team.reduce((best, p) =>
+                    (best?.kills ?? -1) >= (p?.kills ?? -1) ? best : p
+                );
+            };
+
+            const blueStar = pickStar(blueTeam);
+            const redStar = pickStar(redTeam);
+
+            const toKDA = (p: any | undefined) => {
+                const kills = typeof p?.kills === "number" ? p.kills : "?";
+                const deaths = typeof p?.deaths === "number" ? p.deaths : "?";
+                const assists = typeof p?.assists === "number" ? p.assists : "?";
+                return `${kills}/${deaths}/${assists}`;
+            };
+
+            // Determine winner
+            const winTeam = teams.find(
+                (t) => t.win === true || t.win === "Win"
+            );
+            const winTeamId: number | undefined = winTeam?.teamId;
+            const sideLabel =
+                winTeamId === 100
+                    ? "Blue Win"
+                    : winTeamId === 200
+                        ? "Red Win"
+                        : "Unknown Result";
+
+            // Game duration -> mm:ss
+            const durationSeconds: number =
+                typeof data?.info?.gameDuration === "number"
+                    ? data.info.gameDuration
+                    : 0;
+            const mins = Math.floor(durationSeconds / 60);
+            const secs = durationSeconds % 60;
+            const durationClock = `${mins}:${secs.toString().padStart(2, "0")}`;
+
+            const blueChamp = blueStar?.championName ?? "Blue";
+            const redChamp = redStar?.championName ?? "Red";
+
+            const blueKDA = toKDA(blueStar);
+            const redKDA = toKDA(redStar);
+
+            // Final label, e.g.
+            // "Blue Win – Katarina 6/7/1 vs Viktor 18/6/6 – 26:20"
+            const label = `${sideLabel} – ${blueChamp} ${blueKDA} vs ${redChamp} ${redKDA} – ${durationClock}`;
 
             return {
                 matchId: r.matchId,
                 updatedAt: r.updatedAt,
-                label: `${champ} ${kda}`,
+                label,
             };
         });
 
