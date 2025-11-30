@@ -9,6 +9,12 @@ dist/
 build/
 coverage/
 
+node_modules/
+.vs/
+dist/
+build/
+*.log
+
 # Env / secrets
 .env
 *.env
@@ -24,3 +30,10 @@ Thumbs.db
 # Vite + cache
 web/.vite/
 web/.parcel-cache/
+package-lock.json
+package.json
+node_modules/.package-lock.json
+web/package-lock.json
+web/package.json
+web/package.json
+web/package-lock.json
