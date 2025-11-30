@@ -71,7 +71,7 @@ export default function EventBar({ events, onSeek }: Props) {
   );
 }
 
-/* Small helper components */
+// Small helper components 
 
 // A reusable filter button
 function FilterButton({
@@ -101,7 +101,7 @@ function FilterButton({
   );
 }
 
-// The small rounded “pill” representing one event icon
+// The small rounded pill representing one event icon
 function EventPill({ e, onSeek }: { e: ReplayEvent; onSeek: (tMs: number) => void }) {
   const icon = iconFor(e);  // choose SVG icon based on event kind
   const label = labelFor(e); // readable tooltip text (optional helper)
@@ -180,7 +180,7 @@ function msToClock(ms: number) {
   return `${m}:${ss.toString().padStart(2, "0")}`;
 }
 
-// Optional helper for tooltip labels
+//helper for tooltip labels
 function labelFor(e: ReplayEvent): string {
   switch (e.kind) {
     case "CHAMP_KILL": return "Champion kill";

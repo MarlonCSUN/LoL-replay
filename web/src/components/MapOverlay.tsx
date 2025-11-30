@@ -40,6 +40,7 @@ export default function MapOverlay({ width, height, timeMs, events }: Props) {
   const sx = width / MAP_SIZE;
   const sy = height / MAP_SIZE;
 
+  
   // Spawn helper: create an Effect at a Riot position (x,y) and add to list
   const spawn = useCallback((kind: Effect["kind"], rx?: number, ry?: number) => {
     if (typeof rx !== "number" || typeof ry !== "number") return; // no position → skip
@@ -99,7 +100,6 @@ export default function MapOverlay({ width, height, timeMs, events }: Props) {
   );
 }
 
-/* ----------------- Small animated sprites ----------------- */
 
 function EffectSprite({ effect }: { effect: Effect }) {
   // Progress 0..1 based on lifetime for inline CSS animation calculations
@@ -134,7 +134,7 @@ function EffectSprite({ effect }: { effect: Effect }) {
   }
 }
 
-/* Kill: skull that scales up + a pulse ring */
+// Kill: skull that scales up + a pulse ring 
 function KillPulse({ x, y, p }: { x: number; y: number; p: number }) {
   const scale = 0.6 + 0.8 * p; // grow
   const opacity = 1 - p;       // fade out
@@ -153,7 +153,7 @@ function KillPulse({ x, y, p }: { x: number; y: number; p: number }) {
           left: 0, top: 0,
         }}
       />
-      {/* skull icon (inline SVG) */}
+      {/* skull icon*/}
       <div
         style={{
           transform: `translate(-50%, -50%) scale(${scale})`,
@@ -173,7 +173,7 @@ function KillPulse({ x, y, p }: { x: number; y: number; p: number }) {
   );
 }
 
-/* Epic monster: expanding ripples (like a water ring) */
+// Epic monster: expanding ripples (like a water ring) 
 function EpicRipple({ x, y, p }: { x: number; y: number; p: number }) {
   const r1 = 20 + 50 * p;
   const r2 = 10 + 35 * p;
@@ -203,7 +203,7 @@ function EpicRipple({ x, y, p }: { x: number; y: number; p: number }) {
   );
 }
 
-/* Tower destroyed: quick flash "tower" that scales up then fades */
+// Tower destroyed: quick flash "tower" that scales up then fades 
 function TowerFlash({ x, y, p }: { x: number; y: number; p: number }) {
   const scale = 0.7 + 0.6 * p;
   const opacity = 1 - p;

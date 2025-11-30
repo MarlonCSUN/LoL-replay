@@ -68,7 +68,7 @@ export function saveModel(model: TowerModel) {
 
 /**
  * Learn/refresh the model from a batch of events.
- * Returns a possibly-updated model (does not mutate the input).
+ * Returns a possibly-updated model.
  */
 export function learnFromEvents(modelIn: TowerModel, events: Array<{
   kind: string;
@@ -112,8 +112,7 @@ export function learnFromEvents(modelIn: TowerModel, events: Array<{
 }
 
 /**
- * At time t, return the towers that should be visible (i.e., learned sites
- * that have NOT yet been destroyed by a kill with a matching key at/before t).
+ * At time t, return the towers that should be visible (alive) according to the model and events.
  */
 export function getAliveSitesAt(
   model: TowerModel,
@@ -146,3 +145,4 @@ export function getAliveSitesAt(
   }
   return sites;
 }
+
