@@ -24,7 +24,7 @@ const FIRST_BARON_SPAWN = 20 * 60 * 1000;     // 20:00
 const BARON_RESPAWN = 6 * 60 * 1000;          // 6 minutes after death
 
 /**
- * LESSON: Calculate which objectives are currently available
+ * Calculate which objectives are currently available
  * Takes into account spawn times, death times, and respawns
  */
 export function getVisibleObjectives(
@@ -78,7 +78,7 @@ export function getVisibleObjectives(
   return objectives;
 }
 
-// LESSON: Check if dragon is currently alive
+// Check if dragon is currently alive
 function isDragonAvailable(
   epicKills: ReplayEvent[],
   currentTimeMs: number
@@ -102,7 +102,7 @@ function isDragonAvailable(
   return timeSinceKill >= DRAGON_RESPAWN;
 }
 
-// LESSON: Check if herald is currently alive
+// Check if herald is currently alive
 function isHeraldAvailable(
   epicKills: ReplayEvent[],
   currentTimeMs: number
@@ -133,7 +133,7 @@ function isHeraldAvailable(
   return true;
 }
 
-// LESSON: Check if baron is currently alive
+//Check if baron is currently alive
 function isBaronAvailable(
   epicKills: ReplayEvent[],
   currentTimeMs: number
