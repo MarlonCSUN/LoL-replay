@@ -8,6 +8,11 @@ import ResetPassword from "./pages/ResetPassword";
 import { AuthProvider, useAuth } from "./auth/AuthContext";
 import { JSX } from "react";
 
+// Champion Icon Helper (DDragon)
+function getChampionIcon(champ: string) {
+  return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${champ}.png`;
+}
+
 // Top navigation bar that appears on all pages
 function Nav() {
   const { user, logout } = useAuth();
@@ -25,7 +30,14 @@ function Nav() {
       </Link>
       {user ? (
         <>
-          <span style={{ marginLeft: "auto" }}>Hi, {user.name}</span>
+          <span style={{ marginLeft: "auto", marginTop: "1%"}}>Hi, {user.name}</span>
+          <img src={getChampionIcon("Kaisa")}
+          style={{
+            height:"45px",
+            width:"45px",
+            padding:"1px",
+            borderRadius:"44px",
+          }}></img>
           <button onClick={logout}>Log out</button>
         </>
       ) : (

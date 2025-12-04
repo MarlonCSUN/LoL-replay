@@ -6,6 +6,11 @@ import { easeInOut, motion } from "framer-motion";
 
 import bg from '../images/SignupBG.png';
 
+// Champion Icon Helper (DDragon)
+function getChampionIcon(champ: string) {
+  return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${champ}.png`;
+}
+
 
 export default function Signup() {
     const [name, setName] = useState("");
@@ -67,6 +72,57 @@ export default function Signup() {
         } finally {
             setLoading(false);
         }
+    }
+
+    // champ icon selection
+    const champions = ["Kaisa",
+        "Caitlyn",
+        "Ashe",
+        "Jhin",
+        "Jinx",
+        "Ezreal",
+        "Thresh",
+        "Viego",
+        "LeeSin",
+        "MissFortune",
+        "Nami",
+        "Sylas",
+        "Lulu",
+        "Nautilus",
+        "Milio",
+        "Aatrox",
+        "Darius",
+        "Gangplank",
+        "Ahri",
+        "Lucian",
+        "Malphite",
+        "Vayne",
+        "Karma",
+        "Leona",
+        "Garen",
+        "Yasuo",
+        "Malzahar",
+        "Orianna",
+        "Lux",
+        "Kayn"
+    ]
+
+    const [iconData, setIconData] = useState(getChampionIcon("Kaisa"))
+    const [val, setVal] = useState(0)
+    const handleNext=() => {
+        let index = val < champions.length-1 ? val+1 : 0;
+        setVal(index)
+        const icon = getChampionIcon(champions[index]);
+        console.log(champions[index])
+        setIconData(icon)
+        
+    }
+    const handlePrev=() => {
+        let index = val > 0 ? val-1 : champions.length-1;
+        setVal(index)
+        const icon = getChampionIcon(champions[index]);
+        console.log(champions[index])
+        setIconData(icon)
     }
 
     return (
@@ -164,6 +220,47 @@ export default function Signup() {
                             gap: "12px",
                         }}
                     >
+                    <div style={{
+                        width: "100%",
+                        //backgroundColor: "#fff",
+                        display: "grid",
+                        alignItems:"center",
+                        gridTemplateColumns: "1fr 1fr 1fr",
+                    }}>
+                        <motion.button
+                            whileTap={{ scale: 0.95 }}
+                            type="button"
+                            onClick={() => handlePrev()}
+                            style={{
+                                height:"40%",
+                                width:"100%",
+                                padding: "10px 10px 10px 10px",
+                                borderRadius: 100,
+                            }}
+                        >&#60;</motion.button>
+                        <img 
+                        src={iconData}
+                        style={{
+                            height:"100px",
+                            width:"100px",
+                            padding:"20px",
+                            borderRadius:"99px",
+
+                        }}>
+                        </img>
+                        <motion.button
+                            whileTap={{ scale: 0.95 }}
+                            type="button"
+                            onClick={() => handleNext()}  
+                            style={{
+                                height:"40%",
+                                width:"100%",
+                                padding: "10px 10px 10px 10px",
+                                borderRadius: 100,
+                            }}
+                        >&#62;</motion.button>
+
+                    </div>
                         <label htmlFor="name">Display name (optional)</label>
                         <input
                             id="name"

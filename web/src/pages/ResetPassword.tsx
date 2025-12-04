@@ -154,7 +154,7 @@ export default function ResetPassword() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.5, duration: 2, ease: "easeInOut" }}
         >
-            Sign in to save your Riot ID for quicker replay access!
+            Sign in to save your recent matches for quicker replay access!
         </motion.h2>
         
         </aside>

@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { easeInOut, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 
 import bg from '../images/LoginBG.png';
