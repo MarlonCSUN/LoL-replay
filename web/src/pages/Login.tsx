@@ -2,12 +2,15 @@ import * as React from "react";
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { motion } from "framer-motion";
+import { easeInOut, motion } from "framer-motion";
 
-import bg from "../images/LoginBG.png";
+
+import bg from '../images/LoginBG.png';
+
 
 export default function Login() {
-    const [email, setEmail] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [showPassword, setShowPassword] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
