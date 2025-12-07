@@ -1,0 +1,39 @@
+node_modules/
+npm-debug.log*
+yarn.lock
+pnpm-lock.yaml
+package-lock.json
+
+# Builds
+dist/
+build/
+coverage/
+
+node_modules/
+.vs/
+dist/
+build/
+*.log
+
+# Env / secrets
+.env
+*.env
+server/.env
+web/.env
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Vite + cache
+web/.vite/
+web/.parcel-cache/
+package-lock.json
+package.json
+node_modules/.package-lock.json
+web/package-lock.json
+web/package.json
+web/package.json
+web/package-lock.json

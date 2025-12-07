@@ -1,0 +1,48 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String    @id @default(cuid())
+
+  // EMAIL/PASSWORD AUTH (now optional)
+  email          String?   @unique
+  hashedPassword String?
+
+  // DISPLAY NAME
+  displayName    String
+
+  // DISCORD AUTH
+  discordId      String?   @unique
+  avatarUrl      String?
+
+  createdAt      DateTime  @default(now())
+
+  sessions       Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model MatchCache {
+  matchId   String   @id
+  json      Json
+  updatedAt DateTime @updatedAt
+}
+
+model TimelineCache {
+  matchId   String   @id
+  json      Json
+  updatedAt DateTime @updatedAt
+}
