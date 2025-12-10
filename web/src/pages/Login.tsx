@@ -48,9 +48,8 @@ export default function Login() {
 
             const user = await res.json(); // { id, email, displayName }
 
-            // AuthContext currently expects a string; use displayName or fall back to email
-            login(user.displayName ?? user.email ?? email);
-
+            login(user);
+            
             nav("/replay");
         } catch (err) {
             console.error(err);

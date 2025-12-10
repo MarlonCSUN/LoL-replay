@@ -9,10 +9,12 @@ datasource db {
 
 model User {
   id             String    @id @default(cuid())
-  email          String    @unique
-  hashedPassword String
+  email          String?   @unique
+  hashedPassword String?
   displayName    String
   createdAt      DateTime  @default(now())
+  avatarUrl      String?
+  discordId      String?   @unique
   sessions       Session[]
 }
 

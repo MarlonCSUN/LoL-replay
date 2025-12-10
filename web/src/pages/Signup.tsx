@@ -1,16 +1,16 @@
+// web/src/pages/Signup.tsx
 import * as React from "react";
 import { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../auth/AuthContext";
-import { easeInOut, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
-import bg from '../images/SignupBG.png';
+import bg from "../images/SignupBG.png";
 
 // Champion Icon Helper (DDragon)
 function getChampionIcon(champ: string) {
-  return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${champ}.png`;
+    return `https://ddragon.leagueoflegends.com/cdn/14.4.1/img/champion/${champ}.png`;
 }
-
 
 export default function Signup() {
     const [name, setName] = useState("");
@@ -23,59 +23,9 @@ export default function Signup() {
     const { login } = useAuth();
     const nav = useNavigate();
 
-    async function onSubmit(e: FormEvent) {
-        e.preventDefault();
-        setError(null);
-
-        if (!email.trim()) {
-            setError("Please enter an email.");
-            return;
-        }
-        if (!password || !dPassword) {
-            setError("Please enter and confirm your password.");
-            return;
-        }
-        if (password !== dPassword) {
-            setError("Passwords do not match.");
-            return;
-        }
-
-        try {
-            setLoading(true);
-
-            // This is the Prisma-backed endpoint you'll implement on the server
-            const res = await fetch("/api/auth/signup", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify({
-                    email: email.trim(),
-                    displayName: name.trim() || null,
-                    password,
-                }),
-            });
-
-            if (!res.ok) {
-                const data = await res.json().catch(() => null);
-                setError(data?.error ?? "Signup failed.");
-                return;
-            }
-
-            const user = await res.json(); // expect { id, email, displayName }
-
-            // Same pattern as Login.tsx
-            login(user.displayName ?? user.email ?? email);
-            nav("/replay");
-        } catch (err) {
-            console.error(err);
-            setError("Network or server error while signing up.");
-        } finally {
-            setLoading(false);
-        }
-    }
-
     // champ icon selection
-    const champions = ["Kaisa",
+    const champions = [
+        "Kaisa",
         "Caitlyn",
         "Ashe",
         "Jhin",
@@ -104,25 +54,74 @@ export default function Signup() {
         "Malzahar",
         "Orianna",
         "Lux",
-        "Kayn"
-    ]
+        "Kayn",
+    ];
 
-    const [iconData, setIconData] = useState(getChampionIcon("Kaisa"))
-    const [val, setVal] = useState(0)
-    const handleNext=() => {
-        let index = val < champions.length-1 ? val+1 : 0;
-        setVal(index)
+    const [iconData, setIconData] = useState(getChampionIcon("Kaisa"));
+    const [val, setVal] = useState(0);
+
+    const handleNext = () => {
+        const index = val < champions.length - 1 ? val + 1 : 0;
+        setVal(index);
         const icon = getChampionIcon(champions[index]);
-        console.log(champions[index])
-        setIconData(icon)
-        
-    }
-    const handlePrev=() => {
-        let index = val > 0 ? val-1 : champions.length-1;
-        setVal(index)
+        setIconData(icon);
+    };
+
+    const handlePrev = () => {
+        const index = val > 0 ? val - 1 : champions.length - 1;
+        setVal(index);
         const icon = getChampionIcon(champions[index]);
-        console.log(champions[index])
-        setIconData(icon)
+        setIconData(icon);
+    };
+
+    async function onSubmit(e: FormEvent) {
+        e.preventDefault();
+        setError(null);
+
+        if (!email.trim()) {
+            setError("Please enter an email.");
+            return;
+        }
+        if (!password || !dPassword) {
+            setError("Please enter and confirm your password.");
+            return;
+        }
+        if (password !== dPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+
+        try {
+            setLoading(true);
+
+            const res = await fetch("/api/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "include",
+                body: JSON.stringify({
+                    email: email.trim(),
+                    displayName: name.trim() || null,
+                    password,
+                    avatar: champions[val],
+                }),
+            });
+
+            if (!res.ok) {
+                const data = await res.json().catch(() => null);
+                setError(data?.error ?? "Signup failed.");
+                return;
+            }
+
+            const user = await res.json(); // expect { id, email, displayName, avatarUrl }
+
+            login(user);
+            nav("/replay");
+        } catch (err) {
+            console.error(err);
+            setError("Network or server error while trying to sign up.");
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -220,47 +219,52 @@ export default function Signup() {
                             gap: "12px",
                         }}
                     >
-                    <div style={{
-                        width: "100%",
-                        //backgroundColor: "#fff",
-                        display: "grid",
-                        alignItems:"center",
-                        gridTemplateColumns: "1fr 1fr 1fr",
-                    }}>
-                        <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            type="button"
-                            onClick={() => handlePrev()}
+                        <div
                             style={{
-                                height:"40%",
-                                width:"100%",
-                                padding: "10px 10px 10px 10px",
-                                borderRadius: 100,
+                                width: "100%",
+                                display: "grid",
+                                alignItems: "center",
+                                gridTemplateColumns: "1fr 1fr 1fr",
                             }}
-                        >&#60;</motion.button>
-                        <img 
-                        src={iconData}
-                        style={{
-                            height:"100px",
-                            width:"100px",
-                            padding:"20px",
-                            borderRadius:"99px",
+                        >
+                            <motion.button
+                                whileTap={{ scale: 0.95 }}
+                                type="button"
+                                onClick={handlePrev}
+                                style={{
+                                    height: "40%",
+                                    width: "100%",
+                                    padding: "10px",
+                                    borderRadius: 100,
+                                }}
+                            >
+                                &#60;
+                            </motion.button>
+                            <img
+                                src={iconData}
+                                style={{
+                                    height: "100px",
+                                    width: "100px",
+                                    padding: "20px",
+                                    borderRadius: "99px",
+                                    objectFit: "cover",
+                                }}
+                            />
+                            <motion.button
+                                whileTap={{ scale: 0.95 }}
+                                type="button"
+                                onClick={handleNext}
+                                style={{
+                                    height: "40%",
+                                    width: "100%",
+                                    padding: "10px",
+                                    borderRadius: 100,
+                                }}
+                            >
+                                &#62;
+                            </motion.button>
+                        </div>
 
-                        }}>
-                        </img>
-                        <motion.button
-                            whileTap={{ scale: 0.95 }}
-                            type="button"
-                            onClick={() => handleNext()}  
-                            style={{
-                                height:"40%",
-                                width:"100%",
-                                padding: "10px 10px 10px 10px",
-                                borderRadius: 100,
-                            }}
-                        >&#62;</motion.button>
-
-                    </div>
                         <label htmlFor="name">Display name (optional)</label>
                         <input
                             id="name"
@@ -339,7 +343,6 @@ export default function Signup() {
                         </motion.button>
                     </form>
 
-                    {/* Links */}
                     <div
                         style={{
                             marginTop: "40px",
@@ -352,7 +355,10 @@ export default function Signup() {
                         <Link to="/" style={{ fontWeight: "bold", paddingLeft: "8px" }}>
                             Return to home
                         </Link>
-                        <Link to="/login" style={{ fontWeight: "bold", paddingLeft: "8px" }}>
+                        <Link
+                            to="/login"
+                            style={{ fontWeight: "bold", paddingLeft: "8px" }}
+                        >
                             Have an account already?
                         </Link>
                     </div>
