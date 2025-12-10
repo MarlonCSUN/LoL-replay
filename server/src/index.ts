@@ -33,7 +33,7 @@ import {
 // ----------------------------------------------------------------------------
 const app = express();
 
-// IMPORTANT: allow your frontend to call your backend at 5050
+// IMPORTANT: allow your frontend to backend at 5050
 app.use(
     cors({
         origin: "http://localhost:5173",
